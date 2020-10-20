@@ -304,6 +304,11 @@ const ListObjects = ({
   const openPath = (idElement: string) => {
     const currentPath = get(match, "url", "/object-browser");
 
+    // const tableActions = [
+    //   { type: "view", to: `/object-browser/${selectedBucket}`, sendOnlyId: true },
+    //   { type: "download", onClick: downloadObject, sendOnlyId: true },
+    //   { type: "delete", onClick: confirmDeleteObject, sendOnlyId: true },
+    // ];
     // Element is a folder, we redirect to it
     if (idElement.endsWith("/")) {
       const idElementClean = idElement

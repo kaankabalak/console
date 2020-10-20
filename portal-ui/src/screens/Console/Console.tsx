@@ -51,6 +51,7 @@ import TenantDetails from "./Tenants/TenantDetails/TenantDetails";
 import { clearSession } from "../../common/utils";
 import ObjectBrowser from "./ObjectBrowser/ObjectBrowser";
 import ListObjects from "./Buckets/ListBuckets/Objects/ListObjects/ListObjects";
+import ObjectDetails from "./Buckets/ListBuckets/Objects/ObjectDetails/ObjectDetails";
 import License from "./License/License";
 
 const drawerWidth = 245;
@@ -237,6 +238,10 @@ const Console = ({
     {
       component: ListObjects,
       path: "/object-browser/:bucket/*",
+    },
+    {
+      component: ObjectDetails,
+      path: "/object-browser/:bucket/:object?",
     },
     {
       component: Watch,

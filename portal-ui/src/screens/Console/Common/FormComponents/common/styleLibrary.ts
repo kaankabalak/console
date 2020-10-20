@@ -145,7 +145,8 @@ export const actionsTray = {
 export const searchField = {
   searchField: {
     flexGrow: 1,
-    height: 40,
+    minHeight: 40,
+    marginRight: 30,
     background: "#FFFFFF",
     borderRadius: 5,
     border: "#EAEDEE 1px solid",
@@ -153,12 +154,16 @@ export const searchField = {
     justifyContent: "center",
     padding: "0 16px",
     "& input": {
-      fontSize: 14,
+      fontSize: 12,
+      fontWeight: 700,
       color: "#000",
       "&::placeholder": {
         color: "#393939",
         opacity: 1,
       },
+    },
+    "&:hover": {
+      borderColor: "#000",
     },
   },
 };
