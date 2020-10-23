@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import clsx from "clsx";
 import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -8,9 +9,10 @@ import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
-import AddIcon from '@material-ui/icons/Add';
-import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 import * as reactMoment from "react-moment";
+import ShareFile from "./ShareFile";
 import {
   actionsTray,
   containerForHeader,
@@ -22,6 +24,7 @@ import DownloadIcon from "../../../../../../icons/DownloadIcon";
 import DeleteIcon from "../../../../../../icons/DeleteIcon";
 import TableWrapper from "../../../../Common/TableWrapper/TableWrapper";
 import PencilIcon from "../../../../Common/TableWrapper/TableActionIcons/PencilIcon";
+import SetRetention from "./SetRetention";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -32,8 +35,10 @@ const styles = (theme: Theme) =>
       marginBottom: 26,
       fontSize: 10,
     },
-    objectPathUnderline: {
-      textDecoration: "underline",
+    objectPathLink: {
+      "&:visited": {
+        color: "#000",
+      },
     },
     objectName: {
       fontSize: 24,
@@ -105,8 +110,10 @@ interface IObjectDetailsProps {
 }
 
 const ObjectDetails = ({ classes, match }: IObjectDetailsProps) => {
-  const [bucketName, setBucketName] = useState("");
-  const [objectName, setObjectName] = useState("");
+  const [bucketName, setBucketName] = useState<string>("");
+  const [objectName, setObjectName] = useState<string>("");
+  const [shareFileModalOpen, setShareFileModalOpen] = useState<boolean>(false);
+  const [retentionModalOpen, setRetentionModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const bucketName = match.params["bucket"];
@@ -115,9 +122,25 @@ const ObjectDetails = ({ classes, match }: IObjectDetailsProps) => {
     setObjectName(objectName);
   }, []);
 
+  const openRetentionModal = () => {
+    setRetentionModalOpen(true);
+    console.log("open retention modal");
+  }
+
+  const closeRetentionModal = () => {
+    setRetentionModalOpen(false);
+    console.log("close retention modal");
+  }
+
   const shareObject = () => {
+    setShareFileModalOpen(true);
     console.log("share object");
   };
+
+  const closeShareModal = () => {
+    setShareFileModalOpen(false);
+    console.log("close share modal");
+  }
 
   const deleteTag = () => {
     console.log("delete tag");
@@ -167,6 +190,15 @@ const ObjectDetails = ({ classes, match }: IObjectDetailsProps) => {
   return (
     <React.Fragment>
       <PageHeader label={"Object Browser"} />
+      <ShareFile
+        open={shareFileModalOpen}
+        closeModalAndRefresh={closeShareModal}
+      />
+      <SetRetention
+        open={retentionModalOpen}
+        closeModalAndRefresh={closeRetentionModal}
+        objectName={objectName}
+      />
       <Grid container>
         <Grid item xs={12} className={classes.container}>
           <Grid item xs={12} className={classes.objectNameContainer}>
@@ -180,9 +212,16 @@ const ObjectDetails = ({ classes, match }: IObjectDetailsProps) => {
             </Typography>
           </Grid>
           <Grid item xs={12} className={classes.objectPathContainer}>
-            <span className={classes.objectPathUnderline}>All Buckets</span>
+            <Link className={classes.objectPathLink} to="/object-browser">
+              All Buckets
+            </Link>
             {" / "}
-            <span className={classes.objectPathUnderline}>{bucketName}</span>
+            <Link
+              className={classes.objectPathLink}
+              to={`/object-browser/${bucketName}`}
+            >
+              {bucketName}
+            </Link>
             {" / "}
             <span>{objectName}</span>
           </Grid>
@@ -218,7 +257,7 @@ const ObjectDetails = ({ classes, match }: IObjectDetailsProps) => {
                   size="small"
                   className={classes.propertiesIcon}
                   onClick={() => {
-                    console.log("open retention modal");
+                    openRetentionModal();
                   }}
                 >
                   <PencilIcon active={true} />
@@ -234,7 +273,7 @@ const ObjectDetails = ({ classes, match }: IObjectDetailsProps) => {
                   size="small"
                   className={classes.actionsIcon}
                   onClick={() => {
-                    console.log("open share modal");
+                    shareObject();
                   }}
                 >
                   <ShareIcon />
