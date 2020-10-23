@@ -56,12 +56,12 @@ const SetRetention = ({
             value="status"
             id="status"
             name="status"
-            checked={true}
+            checked={statusEnabled}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              console.log("on change");
+              setStatusEnabled(!statusEnabled);
             }}
             label={"Status"}
-            indicatorLabel={"Enabled"}
+            indicatorLabels={["Enabled", "Disabled"]}
           />
         </Grid>
       </form>
