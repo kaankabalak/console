@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -6,6 +6,7 @@ import { modalBasic } from "../../../../Common/FormComponents/common/styleLibrar
 import ModalWrapper from "../../../../Common/ModalWrapper/ModalWrapper";
 import FormSwitchWrapper from "../../../../Common/FormComponents/FormSwitchWrapper/FormSwitchWrapper";
 import RadioGroupSelector from "../../../../Common/FormComponents/RadioGroupSelector/RadioGroupSelector";
+import DateSelector from "../../../../Common/FormComponents/DateSelector/DateSelector";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -27,6 +28,10 @@ interface ISetRetentionProps {
   objectName: string;
 }
 
+interface IRefObject {
+  resetDate: () => void;
+};
+
 const SetRetention = ({
   classes,
   open,
@@ -36,6 +41,12 @@ const SetRetention = ({
   const [statusEnabled, setStatusEnabled] = useState<boolean>(false);
   const [type, setType] = useState<string>("");
 
+  const dateElement = useRef<IRefObject>(null);
+
+  const dateFieldDisabled = () => {
+    return !(statusEnabled && (type === "governance" || type === "compliance"));
+  };
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("on submit");
@@ -44,6 +55,9 @@ const SetRetention = ({
   const resetForm = () => {
     setStatusEnabled(false);
     setType("");
+    if (dateElement.current) {
+      dateElement.current.resetDate();
+    }
   };
 
   return (
@@ -54,7 +68,7 @@ const SetRetention = ({
         closeModalAndRefresh();
       }}
     >
-      <Grid xs={12} className={classes.objectName}>
+      <Grid item xs={12} className={classes.objectName}>
         {objectName}
       </Grid>
       <form
@@ -64,7 +78,7 @@ const SetRetention = ({
           onSubmit(e);
         }}
       >
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <FormSwitchWrapper
             value="status"
             id="status"
@@ -78,7 +92,7 @@ const SetRetention = ({
             indicatorLabels={["Enabled", "Disabled"]}
           />
         </Grid>
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <RadioGroupSelector
             currentSelection={type}
             id="type"
@@ -93,6 +107,9 @@ const SetRetention = ({
               { label: "Compliance", value: "compliance" },
             ]}
           />
+        </Grid>
+        <Grid item xs={12}>
+          <DateSelector id="date" label="Date" disableOptions={dateFieldDisabled()} ref={dateElement} />
         </Grid>
         <Grid item xs={12} className={classes.buttonContainer}>
           <button
