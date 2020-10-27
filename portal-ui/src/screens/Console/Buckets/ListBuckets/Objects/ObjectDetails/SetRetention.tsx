@@ -30,7 +30,7 @@ interface ISetRetentionProps {
 
 interface IRefObject {
   resetDate: () => void;
-};
+}
 
 const SetRetention = ({
   classes,
@@ -109,7 +109,13 @@ const SetRetention = ({
           />
         </Grid>
         <Grid item xs={12}>
-          <DateSelector id="date" label="Date" disableOptions={dateFieldDisabled()} ref={dateElement} />
+          <DateSelector
+            id="date"
+            label="Date"
+            disableOptions={dateFieldDisabled()}
+            ref={dateElement}
+            borderBottom={true}
+          />
         </Grid>
         <Grid item xs={12} className={classes.buttonContainer}>
           <button
