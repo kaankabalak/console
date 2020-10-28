@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
 import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -50,21 +51,23 @@ const ShareFile = ({
             addSwitch={true}
           />
         </Grid>
-        <Grid container item xs={12} >
+        <Grid container item xs={12}>
           <Grid item xs={10} className={classes.predefinedList}>
             {"https://somelink.will/go/here"}
           </Grid>
           <Grid item xs={2} className={classes.copyButtonContainer}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<CopyIcon />}
-              onClick={() => {
-                console.log("copied!");
-              }}
-            >
-              Copy
-            </Button>
+            <CopyToClipboard text={"https://somelink.will/go/here"}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<CopyIcon />}
+                onClick={() => {
+                  console.log("copied!");
+                }}
+              >
+                Copy
+              </Button>
+            </CopyToClipboard>
           </Grid>
         </Grid>
       </Grid>
