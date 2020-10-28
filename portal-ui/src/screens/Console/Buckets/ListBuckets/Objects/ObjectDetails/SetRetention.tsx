@@ -65,6 +65,7 @@ const SetRetention = ({
       title="Set Retention Policy"
       modalOpen={open}
       onClose={() => {
+        resetForm();
         closeModalAndRefresh();
       }}
     >
