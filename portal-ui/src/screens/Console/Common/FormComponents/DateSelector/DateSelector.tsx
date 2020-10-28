@@ -31,9 +31,11 @@ const styles = (theme: Theme) =>
       justifyContent: "space-between",
       paddingBottom: 10,
       marginTop: 11,
+      marginBottom: 6,
     },
     fieldContainerBorder: {
       borderBottom: "#9c9c9c 1px solid",
+      marginBottom: 20,
     },
   });
 
@@ -90,6 +92,16 @@ const DateSelector = forwardRef(
       setYear("");
     };
 
+    const isDateDisabled = () => {
+      if (disableOptions) {
+        return disableOptions;
+      } else if (addSwitch) {
+        return !dateEnabled;
+      } else {
+        return false;
+      }
+    };
+
     const onMonthChange = (
       e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>
     ) => {
@@ -140,7 +152,7 @@ const DateSelector = forwardRef(
           </Grid>
         </div>
         <div>
-          <FormControl disabled={disableOptions} className={classes.dateInput}>
+          <FormControl disabled={isDateDisabled()} className={classes.dateInput}>
             <Select
               id={`${id}-month`}
               name={`${id}-month`}
@@ -163,7 +175,7 @@ const DateSelector = forwardRef(
             ))} */}
             </Select>
           </FormControl>
-          <FormControl disabled={disableOptions} className={classes.dateInput}>
+          <FormControl disabled={isDateDisabled()} className={classes.dateInput}>
             <Select
               id={`${id}-day`}
               name={`${id}-day`}
@@ -187,7 +199,7 @@ const DateSelector = forwardRef(
             ))} */}
             </Select>
           </FormControl>
-          <FormControl disabled={disableOptions} className={classes.dateInput}>
+          <FormControl disabled={isDateDisabled()} className={classes.dateInput}>
             <Select
               id={`${id}-year`}
               name={`${id}-year`}
